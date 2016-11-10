@@ -1,0 +1,7 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^65"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDFPBM^Capture NDF Data^^R^^^^^^^^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^2^2^2990125^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option will write to the screen NDF data in ASCII delimited format"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="to capture for PBM to load into their files."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="ZZPBM"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="CAPTURE NDF DATA"

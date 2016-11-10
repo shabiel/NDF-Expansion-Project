@@ -1,0 +1,6 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^14"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF INACTIVATE INTERACTION^Inactivate Drug/Drug Interactions^^R^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^1^1^2981014^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option allows one to inactivate a drug/drug interaction."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="INACT^NDFDINT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="INACTIVATE DRUG/DRUG INTERACTI"

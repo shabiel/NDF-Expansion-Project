@@ -1,0 +1,8 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^37"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF PMI INSTALL COMMERCIAL^Install Commercial Data into Utility/FDB Files^^R^^^^^^^^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^19.06^3^3^3020910^^^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option moves data updates stored from the commercial source into"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="various files that will be used to do hte PMI matching process."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,3,0)="After running this option. This has been reconstructed for PMIS Redesign."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="A3AFDBNK"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="INSTALL COMMERCIAL DATA INTO U"

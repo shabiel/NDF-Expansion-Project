@@ -1,0 +1,7 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^64"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDFNODDI^Products Exclude DDI check in Drg Interaction file^^R^^^^^^^^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^19.06^2^2^3030521^^^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option will list VA Products from Don's Exclude DDIs List that"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="have entries in the DRUG INTERACTION file (#56)."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="NDFNODDI"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="PRODUCTS EXCLUDE DDI CHECK IN"

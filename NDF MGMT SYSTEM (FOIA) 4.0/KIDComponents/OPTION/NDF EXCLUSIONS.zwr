@@ -1,0 +1,7 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^12"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF EXCLUSIONS^Products and Exclusions From Checks^^R^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^2^2^3080125^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option prints a list of products entered during a selected date"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="range and whether they are excluded from drug-drug interaction checking."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="NDFEX"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="PRODUCTS AND EXCLUSIONS FROM C"

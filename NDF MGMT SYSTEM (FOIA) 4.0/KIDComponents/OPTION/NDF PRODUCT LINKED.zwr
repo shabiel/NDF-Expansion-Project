@@ -1,0 +1,7 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^47"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF PRODUCT LINKED^Products Newly Linked to PMIs^^R^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^2^2^2990414^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option will send a mail message to the user listing all VA Products"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="which have bee newly linked to a PMI sheet."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="NDFPMI"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="PRODUCTS NEWLY LINKED TO PMIS"

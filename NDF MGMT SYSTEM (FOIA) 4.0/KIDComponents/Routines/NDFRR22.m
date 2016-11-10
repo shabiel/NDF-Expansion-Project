@@ -1,0 +1,53 @@
+NDFRR22 ;BIR/RSB-PRODUCT EDIT ; 06/03/03 15:08
+ ;;4.0; NDF MANAGEMENT;**62**; 1 Jan 99
+ ;
+12 ; VA DISPENSE UNIT
+ N NDFY,CHANGE
+ S (NDFC,CHANGE)=$G(^TMP("NDFR",$J,"50.68,8")) S NDFCC=(NDFC?1.9N)
+ S (NDFM,X)=$$GET^NDFRR1(50.64,.01,$S(NDFCC:$S($D(^TMP("NDFR",$J,"50.68,8")):$P(^PSNDF(50.64,^TMP("NDFR",$J,"50.68,8"),0),"^"),1:""),1:NDFC),1,"VA Dispense Unit") K NDFC,NDFCC
+ I $D(NDFABORT)&('$D(NDFEDIT)) G ^NDFRR2
+ I $D(NDFABORT)&($D(NDFEDIT)) G EXIT^NDFRR2A
+ I NDFM="" Q
+ K DIC S DIC=50.64,DIC(0)="EMZ" D ^DIC
+ I Y=-1 I '$$CK^NDFRR1(50.64,.01,NDFM) D HLP^NDFRR1(50.64,1) G 12
+ I Y=-1 S NDFY=$$ADD^NDFRR1(NDFM,"VA DISPENSE UNIT") I NDFY S ^TMP("NDFR",$J,"50.68,8")=NDFM
+ I $G(NDFY)=0 G 12
+ I +Y>0 I $P(^PSNDF(50.64,+Y,0),"^",2)&($P(^PSNDF(50.64,+Y,0),"^",2)'>DT) W "    (Inactive)" H .4 G 12
+ I +Y>0 S NDFM=$S(Y["^":+Y,1:Y) S ^TMP("NDFR",$J,"50.68,8")=NDFM
+ I CHANGE'=^TMP("NDFR",$J,"50.68,8")&('$D(NDFNW)) D 119^NDFRR2
+ Q:$D(NDFEDIT)
+ ;
+ ;
+13 ;  TRANSMIT TO CMOP? YES OR NO
+ N DIR
+ S:$D(^TMP("NDFR",$J,"50.68,7")) DIR("B")=$$EXTERNAL^DILFD(50.68,7,"",$G(^TMP("NDFR",$J,"50.68,7")))
+ S DIR("A")="Transmit to CMOP"
+ S DIR(0)="Y" D ^DIR
+ I $D(DTOUT)!($D(DUOUT))&(($D(NDFEDIT))) G EXIT^NDFRR2A
+ I $D(DTOUT)!($D(DUOUT))&(('$D(NDFEDIT))) G ^NDFRR2
+ I $$CMOP^NDFRR8 G 13
+ S ^TMP("NDFR",$J,"50.68,7")=+Y
+ Q:$D(NDFEDIT)
+ ;
+14 ;   PMIS
+ ;  ******************************
+ ;  FIX LATER !!
+ ;  ******************************
+ ; N ADD S NDFC=$G(^TMP("NDFR",$J,"50.68,11")),NDFCC=(NDFC?1.9N)
+ ; S (NDFM,X)=$$GET^NDFRR1(50.628,1,$S(NDFCC:$S($D(^TMP("NDFR",$J,"50.68,11")):$P(^PS(50.628,^TMP("NDFR",$J,"50.68,11"),0),"^",2),1:""),1:NDFC),1,"GCNSEQNO") K NDFC,NDFCC
+ D ^NDFRR998
+ I ASKHIM=0 S (NDFM,X)=$$GET^NDFRR1(50.628,1,$S($D(^TMP("NDFR",$J,"50.68,11")):$P(^TMP("NDFR",$J,"50.68,11"),"^"),1:""),0,"GCNSEQNO")
+ I $D(NDFABORT)&('$D(NDFEDIT)) G ^NDFRR2
+ I $D(NDFABORT)&($D(NDFEDIT)) G EXIT^NDFRR2A
+ I NDFM="",$G(NDFNW) G ^NDFRR2A ; W !,"LOOK HERE FARTFACE","  ",NDFM,"  ",NDFEDIT H 3 G ^NDFRR2A
+ I NDFM="",'$G(NDFNW) Q
+ I ASKHIM=0 K DIC S DIC=50.628,DIC(0)="EMZn" D ^DIC K DIC
+ I ASKHIM=0,X="@" S ^TMP("NDFR",$J,"50.68,11")="" W "     (Deleted)" H .5 Q
+ I ASKHIM=0 I X'="@",Y=-1 I '$$CK^NDFRR1(50.628,1,NDFM) W !,"That is not a valid answer",!! H 1.3 D HLP^NDFRR1(50.68,11) G 14
+ I ASKHIM=0 I +Y>0 S NDFM=$S(Y["^":+Y,1:Y),BT=^PS(50.628,+Y,0),NDFM=$P(^PS(50.628,+Y,0),"^",2) S ^TMP("NDFR",$J,"50.68,11")=NDFM_"^"_+Y_"^"_$P(BT,"^",2)_" "_$P(BT,"^",3)_" "_$P(BT,"^",4)_" "_$P(BT,"^",5)
+ I ASKHIM=0,$G(PSEQNO) S ^TMP("NDFR",$J,"50.68,12")=$P(PSEQNO,"^")
+ I ASKHIM=1 I $G(AUTO) S TAT=$P(AUTO,"^",2),BT=^PS(50.628,TAT,0),NDFM=$P(^PS(50.628,TAT,0),"^",2) S ^TMP("NDFR",$J,"50.68,11")=NDFM_"^"_TAT_"^"_$P(BT,"^",2)_" "_$P(BT,"^",3)_" "_$P(BT,"^",4)_" "_$P(BT,"^",5)
+ I ASKHIM=1 S:$G(AUTO) ^TMP("NDFR",$J,"50.68,12")=$P(AUTO,"^",5) S:$G(AUTO) ^TMP("NDFR",$J,"50.68,13")=$P(AUTO,"^",4)
+  Q:$D(NDFEDIT)
+ ;
+ G ^NDFRR2A

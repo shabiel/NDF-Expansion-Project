@@ -1,0 +1,8 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^39"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF PMI LENGTH CHECK^Check for PMI Names Greater than 200 Characters^^R^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^3^3^2990203^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option can be used to check for PMI names larger than 200"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="characters. This was a problem with some of the early updates"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,3,0)="from USPDI."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="LENGTH^NDFPMIU1"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="CHECK FOR PMI NAMES GREATER TH"

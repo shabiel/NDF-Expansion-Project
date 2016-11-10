@@ -1,0 +1,13 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^62"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF VUID MENU^VUID Assignment Menu^^M^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^19.06^3^3^3051104^^^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This menu contains options to manage the VUID assignment process.  It"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="includes tools to assign VUIDs and related fields and reports to"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,3,0)="assist reviews."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,10,0)="^19.01IP^2^2"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,10,1,0)=1031
+^XTMP("K2VC","EXPORT","KRN",19,IEN,10,1,"^")="NDF VUID LIST"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,10,2,0)=1030
+^XTMP("K2VC","EXPORT","KRN",19,IEN,10,2,"^")="NDF VUID CREATE"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,99)="60232,40674"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="VUID ASSIGNMENT MENU"

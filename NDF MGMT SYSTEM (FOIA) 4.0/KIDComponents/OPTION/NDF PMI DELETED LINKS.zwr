@@ -1,0 +1,7 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^36"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF PMI DELETED LINKS^List of VA Products Linked to Deleted PMIS^^R^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^2^2^2990203^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option lists VA products that are linked to deleted medication"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="information sheets."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="VAPN^NDFPMIUP"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="LIST OF VA PRODUCTS LINKED TO"

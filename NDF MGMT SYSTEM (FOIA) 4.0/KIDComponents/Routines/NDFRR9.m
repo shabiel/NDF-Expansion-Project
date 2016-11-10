@@ -1,0 +1,170 @@
+NDFRR9 ;BIR/RSB-ACCEPT NDC CHANGE ; 06/03/03 15:08
+ ;;4.0; NDF MANAGEMENT;**62**; 1 Jan 99
+ ;
+ ;
+ACCEPT ;
+ W !," Updating NDF files...."
+ N NDFLL,NDFNUM,FIELD
+ S NDFLL="" F  S NDFLL=$O(^TMP("NDFD",$J,NDFLL)) Q:'NDFLL!(NDFLL="")  D
+ .Q:NDFLL'?1.99N  S NDFNUM=$S('$D(NDFNUM):1,1:NDFNUM+1)  ; count entries
+ .K NDFIEN
+ .I $D(^TMP("NDFD",$J,NDFLL,"50.67,SEQ")) S NDFIEN=$G(^TMP("NDFD",$J,NDFLL,"50.67,SEQ"))
+ .E  D  ;add new entry to 50.67
+ ..; check to find ien by UPN number so it doesn't add again.
+ ..I $D(^TMP("NDFD",$J,NDFLL,"50.67,2")) S NDFIEN=$O(^PSNDF(50.67,"UPN",$G(^TMP("NDFD",$J,NDFLL,"50.67,2")),0))
+ ..I $G(NDFIEN)'>0 S (NDFIEN,DINUM,X)=$O(^PSNDF(50.67," "),-1)+1 D
+ ...S DIC(0)="",DIC="^PSNDF(50.67," K DD D FILE^DICN
+ ...S ^TMP("NDFD",$J,NDFLL,"50.67,SEQ")=+Y
+ .D STUFF2,STUFF,STUFF1,STUFF3,STUFF4,STUFF5,STUFF6
+ S VALMBCK="B"
+ W "  ..done" H .5 Q
+ ;
+ ;
+STUFF2 ;  stuff NDC and UPN fields
+ I $D(^TMP("NDFD",$J,NDFLL,"50.67,2")) S DR="2////"_$G(^TMP("NDFD",$J,NDFLL,"50.67,2"))_";"
+ I $D(NDFNDC)!$D(^TMP("NDFD",$J,NDFLL,"50.67,1")) D
+ .S DR=$G(DR)_"1////"_$S($D(^TMP("NDFD",$J,NDFLL,"50.67,1")):$G(^TMP("NDFD",$J,NDFLL,"50.67,1")),1:$G(^TMP("NDFD",$J,"NDFDIG"))_$G(^TMP("NDFD",$J,NDFLL,"NDF2DIG")))
+ D DIE
+ Q
+STUFF ; STUFF SINGLE FIELDS THAT DON'T DLAYGO
+ N FIELD S DR=""
+ F FIELD=4,10 D
+ .S NFIELD="50.67,"_FIELD D
+ ..I $G(^TMP("NDFD",$J,NFIELD))="" S DR=DR_FIELD_"////"_"@;"
+ ..I $G(^TMP("NDFD",$J,NFIELD))'="" D
+ ...S DR=DR_FIELD_"////"_$S(FIELD=".01":$P($G(^TMP("NDFD",$J,NFIELD)),"^",2),1:$G(^TMP("NDFD",$J,NFIELD)))_";"
+ D DIE
+ Q
+ ;
+STUFF1  ; Clear and stuff ROUTE OF ADMINISTRATION entries
+ N NDF1 F NDF1=0:0 S NDF1=$O(^PSNDF(50.67,NDFIEN,1,NDF1)) Q:'NDF1  D
+ .S DA(1)=NDFIEN,DA=NDF1,DIE="^PSNDF(50.67,"_NDFIEN_",1,",DR=".01///"_"@" D ^DIE K DIE,DR,DR
+ F NDF1=0:0 S NDF1=$O(^TMP("NDFD",$J,"50.676,.01",NDF1)) Q:'NDF1  D
+ .;S DA(1)=NDFIEN,DA=NDF1,DIE="^PSNDF(50.67,"_NDFIEN_",1,",DR=".01////"_$G(^TMP("NDFD",$J,"50.676,.01",NDF1)) D ^DIE K DIE,DR,DR
+ .K DD S DIC="^PSNDF(50.67,"_NDFIEN_",1,",DIC(0)="L",DIC("P")="50.676A",DA(1)=NDFIEN,X=$G(^TMP("NDFD",$J,"50.676,.01",NDF1)) D FILE^DICN
+ Q
+ ;
+STUFF3  ; stuff and add MANUFACTURER
+ N NDFC,NDFCC,NDFG,NEW S NDFC=$P($G(^TMP("NDFD",$J,"50.67,3")),"^")
+ S NDFCC=(NDFC?1.9N)
+ I NDFCC D
+ .S DA=NDFIEN,DIE="^PSNDF(50.67,",DR="3////"_$G(^TMP("NDFD",$J,"50.67,3")) D ^DIE K DIE,DR,DR
+ I 'NDFCC D
+ .K DIC S X=NDFC,DIC=55.95,DIC(0)="EMZ" D ^DIC K DIC I Y<0 D
+ ..K DD S DIC="^PS(55.95,",DIC(0)="",X=NDFC D FILE^DICN
+ ..I Y>0 S (NEW,DA)=+Y,DIE="^PS(55.95,",DR="1////"_$P($G(^TMP("NDFD",$J,"50.67,3")),"^",2) D ^DIE K DIE,DR,DR
+ .S NDFG=$S($G(Y):Y,1:NEW) S DA=NDFIEN,DIE="^PSNDF(50.67,",DR="3////"_+NDFG D ^DIE K DIE,DR,DR
+ Q
+STUFF4   ; stuff and add PACKAGE SIZE
+ N NDFC,NDFCC,NDFG S NDFC=$G(^TMP("NDFD",$J,NDFLL,"50.67,8"))
+ S NDFCC=NDFC'["|NEW"
+ I NDFCC D
+ .S DA=NDFIEN,DIE="^PSNDF(50.67,",DR="8////"_$G(^TMP("NDFD",$J,NDFLL,"50.67,8")) D ^DIE K DIE,DR,DR
+ I 'NDFCC D
+ .K DIC S X=$P(NDFC,"|"),DIC=50.609,DIC(0)="EMZ" D ^DIC K DIC I Y<0 D
+ ..K DD S DIC="^PS(50.609,",DIC(0)="",X=$P(NDFC,"|") D FILE^DICN
+ .S NDFG=Y S DA=NDFIEN,DIE="^PSNDF(50.67,",DR="8////"_+NDFG D ^DIE K DIE,DR,DR
+ Q
+ ;
+STUFF5    ; stuff and add PACKAGE TYPE
+ N NDFC,NDFCC,NDFG S NDFC=$G(^TMP("NDFD",$J,NDFLL,"50.67,9"))
+ S NDFCC=(NDFC?1.9N)
+ I NDFCC D
+ .S DA=NDFIEN,DIE="^PSNDF(50.67,",DR="9////"_$G(^TMP("NDFD",$J,NDFLL,"50.67,9")) D ^DIE K DIE,DR,DR
+ I 'NDFCC D
+ .K DIC S X=NDFC,DIC=50.608,DIC(0)="EMZ" D ^DIC K DIC I Y<0 D
+ ..K DD S DIC="^PS(50.608,",DIC(0)="",X=NDFC D FILE^DICN
+ .S NDFG=Y S DA=NDFIEN,DIE="^PSNDF(50.67,",DR="9////"_+NDFG D ^DIE K DIE,DR,DR
+ Q
+ ;
+STUFF6 ; stuff VA product name
+ I $D(^TMP("NDFD",$J,NDFLL,"50.67,5")) S DR="5////"_$G(^TMP("NDFD",$J,NDFLL,"50.67,5"))
+ D DIE
+ Q
+DIE ;
+ S DA=NDFIEN,DIE="^PSNDF(50.67," D ^DIE K DIE,DR
+ Q
+ ;
+UPN ; ENTER NEW UPN
+ S (NDFM,X)=$$GET^NDFRR1(50.67,2,$S($D(^TMP("NDFD",$J,NDFANS,"50.67,2")):^TMP("NDFD",$J,NDFANS,"50.67,2"),1:""),0,"UPN")
+ I $D(NDFABORT)&($D(NDFEDIT2)) Q
+ ;I NDFM=""&('$D(NDFEDIT2)) G 8
+ ;I NDFM=""&($D(NDFEDIT2)) Q
+ I NDFM="" Q
+ I NDFM="@" S ^TMP("NDFD",$J,NDFANS,"50.67,2")="" W "   (Deleted)"
+ I $D(^PSNDF(50.67,"UPN",X))&(X'=$G(^TMP("NDFD",$J,NDFANS,"50.67,2"))) W !,"Duplicate UPN" G UPN
+ I '$$CK^NDFRR1(50.67,2,NDFM) D HLP^NDFRR1(50.67,2) G UPN
+ I $$CK^NDFRR1(50.67,2,NDFM) S ^TMP("NDFD",$J,NDFANS,"50.67,2")=NDFM
+ Q
+ ;
+2 ; get Package Size
+ ; prompt for UPN if NDC was entered
+ I ($D(NDFNDC)&('$D(NDFUPN)))!($D(NDFUPNI)) D UPN
+ ;
+ N NDFY
+ S NDFC=$G(^TMP("NDFD",$J,NDFANS,"50.67,8")),NDFCC=NDFC'["|NEW"
+ S (NDFM,X)=$$GET^NDFRR1(50.609,.01,$S(NDFCC:$S($D(^TMP("NDFD",$J,NDFANS,"50.67,8")):$P(^PS(50.609,^TMP("NDFD",$J,NDFANS,"50.67,8"),0),"^"),1:""),1:$P(NDFC,"|")),1,"Package Size") K NDFC,NDFCC
+ I $D(NDFABORT)&($D(NDFEDIT2)) Q
+ I NDFM="" Q
+ K DIC S DIC=50.609,DIC(0)="EMZ" D ^DIC
+ I Y=-1 I '$$CK^NDFRR1(50.609,.01,NDFM) D HLP^NDFRR1(50.609,.01) G 2
+ I Y=-1 S NDFY=$$ADD^NDFRR1(NDFM,"PACKAGE SIZE") I NDFY S ^TMP("NDFD",$J,NDFANS,"50.67,8")=NDFM_"|NEW"
+ I $G(NDFY)=0 G 2
+ I Y=-1&('$G(NDFY)) G 2
+ I +Y>0 S NDFM=$S(Y["^":+Y,1:Y) S ^TMP("NDFD",$J,NDFANS,"50.67,8")=NDFM
+ ;
+ ;
+3 ; get Package Type
+ N NDFY
+ S NDFC=$G(^TMP("NDFD",$J,NDFANS,"50.67,9")),NDFCC=(NDFC?1.9N)
+ S (NDFM,X)=$$GET^NDFRR1(50.608,.01,$S(NDFCC:$S($D(^TMP("NDFD",$J,NDFANS,"50.67,9")):$P(^PS(50.608,^TMP("NDFD",$J,NDFANS,"50.67,9"),0),"^"),1:""),1:NDFC),1,"Package Type") K NDFC,NDFCC
+ I $D(NDFABORT)&($D(NDFEDIT2)) Q
+ I NDFM="" Q
+ K DIC S DIC=50.608,DIC(0)="EMZ" D ^DIC
+ I Y=-1 I '$$CK^NDFRR1(50.608,.01,NDFM) D HLP^NDFRR1(50.608,.01) G 3
+ I Y=-1 S NDFY=$$ADD^NDFRR1(NDFM,"PACKAGE TYPE") I NDFY S ^TMP("NDFD",$J,NDFANS,"50.67,9")=NDFM
+ I $G(NDFY)=0 G 3
+ I Y=-1&('$G(NDFY)) G 3
+ I +Y>0 S NDFM=$S(Y["^":+Y,1:Y) S ^TMP("NDFD",$J,NDFANS,"50.67,9")=NDFM
+ ;
+ ; edit VA product
+ D 1^NDFRR2 S ^TMP("NDFD",$J,NDFANS,"50.67,5")=$G(^TMP("NDFD",$J,"50.67,5"))
+NDC1 ;
+ Q:('$D(NDFUPN)&('$D(NDFUPNI)))
+ K DIR S DIR(0)="FO",DIR("A")="Enter the 12 character NDC"
+ S DIR("?")="Enter the 12 digit NDC number."
+ I $D(^TMP("NDFD",$J,NDFANS,"50.67,1")) S DIR("B")=$G(^TMP("NDFD",$J,NDFANS,"50.67,1"))
+ D ^DIR K DIR Q:Y<0
+ I $D(DTOUT)!($D(DUOUT)) Q
+ I X="" Q
+ I X'?1.12N!($L(X)>12)!($L(X)<12) W !,"Answer must be a 12 digit number." G NDC1 Q
+ I $D(^PSNDF(50.67,"NDC",X))&(X'=$G(^TMP("NDFD",$J,NDFANS,"50.67,1"))) W !,"Duplicate 12 digit NDC" G NDC1
+ S ^TMP("NDFD",$J,NDFANS,"50.67,1")=X
+ ;
+ Q
+ADMIN   ;
+ D FULL^VALM1 S NDFADMIN=1
+ N FIRST,LIST,LAST S LIST="",FIRST=0,LAST=0 W !
+ N X,TOT S TOT=0 F X=0:0 S X=$O(^TMP("NDFD",$J,"50.676,.01",X)) Q:'X  D
+ .S TOT=TOT+1 S:FIRST=0 FIRST=X S:LAST<X LAST=X
+ .;W !,"("_X_") ",$P(^PS(51.2,+^TMP("NDFD",$J,"50.676,.01",X),0),"^")
+ .W !,"("_X_") ",^TMP("NDFD",$J,"50.676,.01",X)
+ W ! K DIR S DIR("A")="Do you wish to Add or Delete entries?",DIR(0)="SBOM^A:Add new entries;D:Delete entries" D ^DIR
+ I $D(DTOUT)!($D(DUOUT)) Q
+ I Y="A" D ADMINA G ADMIN
+ I Y="D" D ADMIND,ADJUST^NDFRR2A("NDFD","50.676,.01") G ADMIN
+ Q
+ ;
+ADMINA S (NDFM,X)=$$GET^NDFRR1(51.2,.01,"",0,"Route of Administration")
+ I NDFM="" Q
+ K DIC S DIC=51.2,DIC(0)="EMZ" D ^DIC
+ I Y=-1 D  G ADMIN
+ .I '$$CK^NDFRR1(51.2,.01,NDFM) D HLP^NDFRR1(51.2,.01)
+ S NDFM=Y(0,0) S ^TMP("NDFD",$J,"50.676,.01",TOT+1)=NDFM,TOT=TOT+1
+ G ADMINA
+ADMIND ;
+ K DIR S DIR(0)="NO^"_FIRST_":"_LAST,DIR("A")="Delete entry" D ^DIR
+ I Y=-1 Q
+ I $D(DTOUT)!($D(DUOUT)) Q
+ K ^TMP("NDFD",$J,"50.676,.01",Y) W "  (Deleted)" H .5
+ Q

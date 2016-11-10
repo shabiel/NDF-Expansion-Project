@@ -1,0 +1,7 @@
+^XTMP("K2VC","EXPORT","KRN",19,IEN,-1)="0^41"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,0)="NDF PMI UPDATE REAL PMI FILES^Move New PMI Data into Official Files^^R^^^^^^^^NDF MANAGEMENT"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,0)="^^2^2^2990203^"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,1,0)="This option is used to update the official files storing PMI text."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,1,2,0)="Once completed, links between VA Products and new PMIs can created."
+^XTMP("K2VC","EXPORT","KRN",19,IEN,25)="MAP^NDFPMIUP"
+^XTMP("K2VC","EXPORT","KRN",19,IEN,"U")="MOVE NEW PMI DATA INTO OFFICIA"
