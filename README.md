@@ -111,6 +111,15 @@ Documentation for PPS-N can be found at [2].
 Source code for the two future versions (unreleased) of PPS-N can be found at
 [3] and [4]. I can't find the source code for v1.0.
 
+## Systems Involved
+
+ a. Client VistA systems; which are the systems that have patient data
+ and which pharmacists and physicians use.
+ b. NDFMS, a VistA system which makes the NDF patches. You distribute
+ these patches to VistA systems in a.
+ c. PPS-N, which is a WebLogic system, which uses Remote Procedures to
+ apply data to the NDFMS. The remote procedures run using VistALink.
+
 ## Proposed Process for adding non-US drugs to the NDF
 ### Activation of previously inactive entries
 An easy fix for many products is that they may exist already in the NDF, but
@@ -127,7 +136,19 @@ IENs.
 I think this may be the hardest: making a Jordan specific NDF patch. The
 reason is that the NDFMS system needs initial configuration and data entry in
 files in the 5000 range which it distrubutes. However, there is no documentation
-on how to do that.
+on how to do that. The 5000 file range does not contain any files with data;
+instead, they contain data control structures that keep track of which entries
+were previously exported and by whom. In order to set-up the NDF-MS, it is
+necessary set-up the 5000 range files. This should be done using experimentation.
+
+## Drug Interactions
+The NDF-MS also allows you to update drug interactions. It will let you assign
+CRITICAL/SIGNIFICANT severity to a pair of ingredients. They will be transported
+with all the rest of the data that you added.
+
+It's important to note that if new drug ingredients are added to the National
+Drug File, if there are interactions, they ought to be added to the DRUG
+INTERACTION file in NDF-MS.
 
 ## Timeline if I were to develop this
  * 100 hours to get NDFMS running
@@ -162,7 +183,9 @@ Next, Cached changes to active ingredients are sent over to the Drug Ingredients
 file.
 
 Next, two email messages are sent. The email messages are NOT generated on the
-fly; rather they are inside of the transport global.
+fly; rather they are inside of the transport global. These email messages are
+the ones received by the installer and all holders of the PSNMGR key on the
+destination VistA system into which the NDF patches are installed.
 
 Next, find VA PRODUCTs that just got inactivated by this or any other patch;
 for each found one, delete the NDF node ("ND") and the doses (possible and
@@ -219,12 +242,36 @@ data build as the pre-transport routine.
 
 Last but not least, every entry needs to have a VUID assigned. I haven't dug
 into this process, but it's certain that you will need to establish your own
-unique numbering system for that field too.
+unique numbering system for that field too. The reason you need to do that is
+that VUID is a key on all the files; and the VA will continue to generate
+their own VUIDs. Therefore, you need to generate VUIDs that have no possiblity
+of colliding with VA VUIDs. In theory, any number range above 10,000,000 is
+fine; the VA currently uses 4,000,000-5,000,000.
 
 # Attachments
 Along with this report, I am sending patch PSN\*4.0\*466 as an example NDF
 Data patch, as well the FOIA copy of the NDF Management System. All routines
 referenced anywhere in the document can be found in either of these two folders.
+
+# Next Steps
+
+ 1. Install the NDF-MS System on a Standalone VistA System for development and testing.
+ 2. Test the system by adding entries, and try to make an initial export (you
+ 	need to figure out how to set up the files in the 5000 range).
+ 3. Modify NDF-MS in order that it a. adds new entries in IENs in the EHS
+ 	numberspace, and b. assigns VUIDs that are in the EHS numberspace.
+ 4. Add entries, and make an export.
+ 5. Install the export in a test VistA system, to see if it works. Verify that
+    a. IENs are in the EHS numberspace and b. VUIDs are unique across all the system
+	and are in the EHS numberspace and c. New Drug Interactions are seen in the
+	VistA system.
+ 6. Create a production NDF-MS system with the modified code (up to you how to copy the code and files), and initialize it.
+ 7. Add entries, and create a patch.
+ 8. Install patch on test system. Do checks in no. 5 again.
+ 9. If everything is okay, install patch on production systems.
+ 10. Monitor for issues.
+ 
+ Repeat 7-10 with an objective of releasing updated drugs monthly.
 
 # Footnotes
 [1] Personal conversation with Don Lees, manager of the NDF at PBM, VA.
